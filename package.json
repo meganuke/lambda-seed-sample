@@ -1,0 +1,37 @@
+{
+  "name": "lambda-seed-example",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "sls offline",
+    "test": "jest",
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "prepare": "npm run compile",
+    "pretest": "npm run compile",
+    "posttest": "npm run lint"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.692.0",
+    "@aws-sdk/types": "^3.410.0",
+    "@types/aws-lambda": "^8.10.120",
+    "@types/jest": "^29.0.3",
+    "@types/node": "^22.7.5",
+    "@types/pg": "^8.10.2",
+    "dotenv": "^16.3.1",
+    "gts": "^6.0.2",
+    "jest": "^29.0.3",
+    "serverless": "^3.27.0",
+    "serverless-esbuild": "^1.54.5",
+    "serverless-offline": "^13.6.0",
+    "ts-jest": "^29.0.2",
+    "typescript": "^5.6.3"
+  },
+  "author": "Douglas Grillet",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^8.16.3"
+  }
+}
