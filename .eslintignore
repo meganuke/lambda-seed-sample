@@ -1,1 +1,5 @@
 build/
+src/repository/repository.ts
+src/model/api.model.ts
+src/util/lambda.ts
+src/util/sns.ts

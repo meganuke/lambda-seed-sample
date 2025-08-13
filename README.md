@@ -4,7 +4,7 @@ This is a sample of how to use the lambda-seed library with the lambda-pod proje
 
 ## Still WIP
 
-make sure to set the .env variables and execute the migration first.
+make sure to set the .env variables and execute the migration step by step.
 
 to run locally use: `serverless offline`
 

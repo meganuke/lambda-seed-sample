@@ -1,18 +1,23 @@
-CREATE ROLE calc WITH LOGIN NOSUPERUSER INHERIT CREATEDB NOCREATEROLE NOREPLICATION PASSWORD '123456'; GRANT calc TO postgres;
+-- step 1: create a new user role and database
+CREATE ROLE lambda_seed_user WITH LOGIN NOSUPERUSER INHERIT CREATEDB NOCREATEROLE NOREPLICATION PASSWORD '123456'; 
+GRANT lambda_seed_user TO postgres;
 
-CREATE DATABASE calc_db WITH OWNER = calc ENCODING = 'UTF8' CONNECTION LIMIT = -1;
+-- step 2: create the database
+CREATE DATABASE lambda_pod_db WITH OWNER = lambda_seed_user ENCODING = 'UTF8' CONNECTION LIMIT = -1;
 
+-- step 3: connect to the database and create the uuid function
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
 
-CREATE TABLE calculation
+-- step 4: create the user table
+CREATE TABLE user
 (
-  id uuid NOT NULL,
-  operation TEXT NOT NULL,
-  operands TEXT NOT NULL,
-  result TEXT,
-  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  username TEXT NOT NULL UNIQUE,
+  name JSONB,
+  email TEXT UNIQUE,
+  enabled BOOLEAN NOT NULL DEFAULT TRUE
 );
 
-ALTER TABLE IF EXISTS public.calculation
-  OWNER to calc;
+ALTER TABLE IF EXISTS public.user
+  OWNER to lambda_seed_user;

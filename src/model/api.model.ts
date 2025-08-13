@@ -1,4 +1,4 @@
-import {Calculation} from './calculation.model';
+import {User} from './user.model';
 
 interface ResponseHeaders {
   'Access-Control-Allow-Headers': '*';
@@ -52,17 +52,18 @@ export interface QueryParameters {
   string_order_bys?: string[]; // because of the way the API Gateway maps query parameters
 }
 
+export interface SimplifiedPersonName {
+  title?: string;
+  first: string;
+  others?: string;
+  last: string;
+  suffix?: string;
+  preferred?: string;
+}
+
 export interface ControllerError {
   statusCode: number;
   message: string;
 }
 
-export type ApiType =
-  | null
-  | string
-  | string[]
-  | boolean
-  | number
-  | number[]
-  | Calculation
-  | Calculation[];
+export type ApiType = null | string | string[] | boolean | User | User[];

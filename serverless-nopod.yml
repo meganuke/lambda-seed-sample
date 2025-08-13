@@ -9,10 +9,10 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'ap-southeast-2'}
   vpc:
-    securityGroupIds: ${ssm:lambda-security-group, ''}
+    securityGroupIds: ${env:SECURITY_GROUP_ID, ''}
     subnetIds:
-      - ${ssm:subneta-id, ''}
-      - ${ssm:subnetb-id, ''}
+      - ${env:SUBNET_A_ID, ''}
+      - ${env:SUBNET_B_ID, ''}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -31,13 +31,15 @@ provider:
       Action:
         - sns:Publish
       Resource: '*'
-    - Effect: Allow
-      Action:
-        - secretsmanager:GetSecretValue
-      Resource: 'arn:aws:secretsmanager:${self:provider.region}:${aws:accountId}:secret:core/*'
 
   environment:
-    COGNITO_POOL_ID: ${ssm:cognito-pool-id}
+    PGHOST: ${env:PGHOST, ''}
+    PGUSER: ${env:PGUSER, ''}
+    PGPASSWORD: ${env:PGPASSWORD, ''}
+    PGDATABASE: ${env:PGDATABASE, ''}
+    PGPORT: ${env:PGPORT, ''}
+    USE_SECRETS_MANAGER: ${env:USE_SECRETS_MANAGER, 'false'}
+    COGNITO_POOL_ID: ${env:COGNITO_POOL_ID, ''}
 
 functions:
   #----------------- User Crud ---------------
@@ -113,7 +115,7 @@ custom:
     httpPort: 3000
     lambdaPort: 3002
   authorizer:
-    arn: ${ssm:authorizer-arn}
+    arn: ${env:AUTHORIZER_ARN, ''}
     identitySource: method.request.header.Authorization
 
 resources:

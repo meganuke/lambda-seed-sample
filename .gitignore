@@ -14,6 +14,7 @@ dist/
 .serverless
 .build
 build/
+.esbuild/
 
 .idea/
 .vscode

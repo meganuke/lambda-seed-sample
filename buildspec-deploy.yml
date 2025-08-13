@@ -1,0 +1,31 @@
+# This file is part of the Lambda Seed project.
+# It is used by AWS CodePipeline and CodeBuild to deploy the application.
+# The Pipeline and CodeBuild projects are defined in the lambda-pod project.
+# If you are not using lambda-pod you can safely delete this file.
+version: 1
+
+batch:
+  fast-fail: true
+env:
+  parameter-store:
+    CACHE_BUCKET: codepipeline-cache-bucket
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - echo Installing source NPM dependencies...
+      - npm ci --no-audit --prefer-offline --ignore-scripts
+
+  build:
+    commands:
+      - sls deploy -p package -s $STAGE  --region $AWS_REGION
+
+  post_build:
+    commands:
+      - echo "done"
+
+cache:
+  paths:
+    - '/root/.npm/**/*'
